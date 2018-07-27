@@ -19,7 +19,7 @@ const api = (function() {
       success: callback
     });
   };
-  // for extension to edit inputs and pass to api for change
+  // for extension to edit inputs and pass to api for change and filter?
   const updateBookmark = function (stringify, callback) {
     $.ajax({
       url: BASE_URL,

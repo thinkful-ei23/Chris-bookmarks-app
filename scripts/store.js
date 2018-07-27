@@ -5,7 +5,7 @@ const store = (function(){
 
   const bookmarks = [];
   const adding = false;
-  const rating = 4;
+  const rating = 1;
   // const desc = '';
   const url = '';
 
@@ -22,9 +22,9 @@ const store = (function(){
     console.log(this.bookmarks);
   };
 
-  // const filterRating = function () {
-  //   this.bookmarks.rating = !this.rating;
-  // }
+  const filterRating = function (rating) {
+    this.rating = Number(rating);
+  };
 
 
   return {
@@ -36,7 +36,8 @@ const store = (function(){
     
     addbookmark,
     findbyid,
-    findAndDelete
+    findAndDelete,
+    filterRating
   };
 
 }());

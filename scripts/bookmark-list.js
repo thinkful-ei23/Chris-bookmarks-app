@@ -1,4 +1,5 @@
 'use strict';
+/* global $ */
 
 const bookmarkList = (function(){
 
@@ -29,21 +30,26 @@ const bookmarkList = (function(){
   }
 
   function generateShoppingBookmarksString(bookmarkList) {
-    console.log('generateshopbookmarkString, ran');
     const bookmark = bookmarkList.map(item => generatesliElements(item));
     return bookmark.join('');
   }
 
   function render() {
     console.log('render, ran');
-    const bookmarkliString = generateShoppingBookmarksString(store.bookmarks);
+    let filteredBookmarks = store.bookmarks.filter(bookmark => bookmark.rating >= store.rating);
+    const bookmarkliString = generateShoppingBookmarksString(filteredBookmarks);
     // console.log(bookmarkliString);
+    if (store.adding === true) {
+      $('.add-bookmark').html(generateaddBookmarkForm());
+    }
+    else {
+      $('.add-bookmark').html('<button class="js-add-bookmark">Add Bookmark</button>');
+    }
     $('.js-bookmark-list').html(bookmarkliString);
   }
 
   function generateaddBookmarkForm() {
     return `
-      <form action="" class="js-add-form">
         <div class="title-url">
           <label for="book-title">Title:</label>
           <input type="text" name="title" id="book-title" placeholder="ex: The Great Gatsby" required>
@@ -63,32 +69,32 @@ const bookmarkList = (function(){
           <label for="rating-2">2</label>
           <input type="radio" id="rating-3" name="rating" value="3" />
           <label for="rating-3">3</label>
-          <input type="radio" id="rating-4" name="rating" value="4" checked="checked"/>
+          <input type="radio" id="rating-4" name="rating" value="4" checked="checked" />
           <label for="rating-4">4</label>
           <input type="radio" id="rating-5" name="rating" value="5" />
           <label for="rating-5">5</label>
         </fieldset>
-      </form>
     `;
   }
 
   function handleRatingFilter() {
-    $('select :selected').change(function (e) {
-      e.preventDefault();
+    $('.js-rate-form').on('change', function (e) {
+      // e.preventDefault();
       const ratingValue = $('#js-rate-order-option').val();
       console.log(ratingValue);
-    });
-  }
-
-  function handleAddBookmarkClick() {
-    console.log('handleadditem, ran');
-    $('.js-add-bookmark').click(function (e) {
-      e.preventDefault();
-      $('.add-bookmark').html(generateaddBookmarkForm());
-      // store.adding = true;
+      store.filterRating(ratingValue);
       render();
     });
   }
+
+  // function handleAddBookmarkClick() {
+  // console.log('handleadditem, ran');
+  // $('.add-bookmark').on('submit', function (e) {
+  //   e.preventDefault();
+  //     store.adding = true;
+  //     render();
+  //   });
+  // }
 
   $.fn.extend({
     serializeJson: function serializeJson() {
@@ -102,13 +108,20 @@ const bookmarkList = (function(){
   });
 
   function handleBookmarkSubmitForm() {
+    console.log('event handle bookmark')
     // might need event delegation here
     $('.add-bookmark').on('submit', function (e) {
       e.preventDefault();
+      if (store.adding === false) {
+        store.adding = true;
+        render();
+        return;
+      }
       console.log('in hadnesubmitform' + e.target);
       const bookmarkInfo = $(e.target).serializeJson();
       api.createBookmark(bookmarkInfo, response => {
         store.addbookmark(response);
+        store.adding = false;
         render();
       });
     });
@@ -150,7 +163,7 @@ const bookmarkList = (function(){
 
   function bindEventListenrs() {
     handleRatingFilter();
-    handleAddBookmarkClick();
+    // handleAddBookmarkClick();
     handleBookmarkSubmitForm();
     handleShowMoreButton();
     handleDeleteBookmarkClick();
