@@ -14,21 +14,20 @@
   <header role="banner">
     <h1>My Bookmarks</h1>
   </header>
-  <main>
+  <main role="main">
     <!-- Rating Form dropdown menu -->
-    <form class="js-rate-form">
-      <fieldset>
-        <label for="rating">Sort by: </label>
-        <select name="rating" id="js-rate-order-option">
+    <form role="search" class="js-rate-form">
+        <label for="rating">Only ratings above: </label>
+        <select name="rating" id="js-rate-order-option" aria-label="sort">
+          <option disable selected value>Select Rating</option>
           <option value="5">5 Star Rating</option>
           <option value="4">4 Star Rating</option>
           <option value="3">3 Star Rating</option>
           <option value="2">2 Star Rating</option>
           <option value="1">1 Star Rating</option>
         </select>
-      </fieldset>
       </form>
-    <form class="add-bookmark">
+    <form role="search" class="add-bookmark">
       <button class="js-add-bookmark">Add Bookmark</button>
     </form>
 

@@ -9,22 +9,31 @@ const bookmarkList = (function(){
     let visitLink = '';
     let deleteButton = '';
     if (bookmark.expanded === true) {
-      description = `<div class="js-desc">${bookmark.desc}</div>`;
+      description = `<div class="desc-container js-desc">
+                      <label for="desc">Description: </label>
+                      ${bookmark.desc}
+                    </div>`;
       buttonLabel = 'Show less';
       visitLink = `<a href="${bookmark.url}" target="_blank"><button>Visit Site</button></a>`;
       deleteButton = '<button class="js-delete-button">Delete Bookmark</button>';
     }
+    let starRating = `<span class="fa fa-star star1"></span>
+      <span class="fa fa-star star2"></span>
+      <span class="fa fa-star star3"></span>
+      <span class="fa fa-star star4"></span>
+      <span class="fa fa-star star5"></span>
+      `;
     return ` 
       <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
         <div class="title-container js-title">
           ${bookmark.title}  >> <button class="js-show-more-less">${buttonLabel}</button>
         </div>
         ${description}
-        <div>
+        <div class="visit-delete">
           ${visitLink}
           ${deleteButton}
         </div>
-        <div>${bookmark.rating}</div>
+        <div class="stars js-stars rating-${bookmark.rating}">${starRating}</div>
       </li>
     `;
   }
@@ -35,16 +44,15 @@ const bookmarkList = (function(){
   }
 
   function render() {
-    console.log('render, ran');
     let filteredBookmarks = store.bookmarks.filter(bookmark => bookmark.rating >= store.rating);
     const bookmarkliString = generateShoppingBookmarksString(filteredBookmarks);
-    // console.log(bookmarkliString);
     if (store.adding === true) {
       $('.add-bookmark').html(generateaddBookmarkForm());
     }
     else {
       $('.add-bookmark').html('<button class="js-add-bookmark">Add Bookmark</button>');
     }
+    
     $('.js-bookmark-list').html(bookmarkliString);
   }
 
@@ -61,7 +69,8 @@ const bookmarkList = (function(){
         laudantium quis voluptates corporis.">
 
         <input class="js-add-bookmark" type="submit" value="add" />
-        <button class="js-cancel-button">Cancel</button>
+        <button type="button" class="js-cancel-button">Cancel</button>
+
         <fieldset>
           <input type="radio" id="rating-1" name="rating" value="1" />
           <label for="rating-1">1</label>
@@ -79,22 +88,11 @@ const bookmarkList = (function(){
 
   function handleRatingFilter() {
     $('.js-rate-form').on('change', function (e) {
-      // e.preventDefault();
       const ratingValue = $('#js-rate-order-option').val();
-      console.log(ratingValue);
       store.filterRating(ratingValue);
       render();
     });
   }
-
-  // function handleAddBookmarkClick() {
-  // console.log('handleadditem, ran');
-  // $('.add-bookmark').on('submit', function (e) {
-  //   e.preventDefault();
-  //     store.adding = true;
-  //     render();
-  //   });
-  // }
 
   $.fn.extend({
     serializeJson: function serializeJson() {
@@ -107,9 +105,8 @@ const bookmarkList = (function(){
     }
   });
 
-  function handleBookmarkSubmitForm() {
-    console.log('event handle bookmark')
-    // might need event delegation here
+  function handleBookmarkAddSubmitForm() {
+    console.log('event handle bookmark');
     $('.add-bookmark').on('submit', function (e) {
       e.preventDefault();
       if (store.adding === false) {
@@ -127,11 +124,17 @@ const bookmarkList = (function(){
     });
   }
 
-  // function handleCancelSubmit() {
-  //   $('.add-bookmark').on('click', '.js-cancel-button', function(e) {
-
-  //   });
-  // }
+  function handleBookmarkCancelClick() {
+    console.log('event handle bookmark')
+    // might need event delegation here
+    $('.add-bookmark').on('click', '.js-cancel-button', function (e) {
+      if (store.adding === true) {
+        store.adding = false;
+        render();
+        return;
+      }
+    });
+  }
 
   function getItemIdFromElement(bookmark) {
     return $(bookmark).closest('.js-bookmark-element').data('bookmark-id');
@@ -152,7 +155,6 @@ const bookmarkList = (function(){
       e.preventDefault();
       const idtoDelete = getItemIdFromElement(e.currentTarget);
       console.log(idtoDelete);
-      // const bookmarkObj = $(e.target).serializeJson();
       api.deleteBookmark(idtoDelete, () => { 
         store.findAndDelete(idtoDelete);
         render();
@@ -163,8 +165,8 @@ const bookmarkList = (function(){
 
   function bindEventListenrs() {
     handleRatingFilter();
-    // handleAddBookmarkClick();
-    handleBookmarkSubmitForm();
+    handleBookmarkAddSubmitForm();
+    handleBookmarkCancelClick();
     handleShowMoreButton();
     handleDeleteBookmarkClick();
   }
