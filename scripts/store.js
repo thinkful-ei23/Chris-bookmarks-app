@@ -6,11 +6,11 @@ const store = (function(){
   const bookmarks = [];
   const adding = false;
   const rating = 4;
-  const desc = '';
+  // const desc = '';
   const url = '';
 
   const addbookmark = function(bookmark) {
-    this.bookmarks.push(bookmark);
+    this.bookmarks.push(Object.assign(bookmark, {expanded: false}));
   };
 
   const findbyid = function(id) {
@@ -26,7 +26,7 @@ const store = (function(){
     bookmarks,
     adding,
     rating,
-    desc,
+    // desc,
     url,
     
     addbookmark,

@@ -3,15 +3,27 @@
 const bookmarkList = (function(){
 
   function generatesliElements(bookmark) {
+    let description = '';
+    let buttonLabel = 'Show more';
+    let visitLink = '';
+    let deleteButton = '';
+    if (bookmark.expanded === true) {
+      description = `<div class="js-desc">${bookmark.desc}</div>`;
+      buttonLabel = 'Show less';
+      visitLink = `<a href="${bookmark.url}" target="_blank"><button>Visit Site</button></a>`;
+      deleteButton = '<button class="js-delete-button">Delete Bookmark</button>';
+    }
     return ` 
       <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
         <div class="title-container js-title">
-          ${bookmark.title}  >> <button class="js-show-more">Show more</button>
+          ${bookmark.title}  >> <button class="js-show-more-less">${buttonLabel}</button>
         </div>
-        <div class="js-desc">
-        
+        ${description}
+        <div>
+          ${visitLink}
+          ${deleteButton}
         </div>
-        <div></div>
+        <div>${bookmark.rating}</div>
       </li>
     `;
   }
@@ -25,7 +37,7 @@ const bookmarkList = (function(){
   function render() {
     console.log('render, ran');
     const bookmarkliString = generateShoppingBookmarksString(store.bookmarks);
-    console.log(bookmarkliString);
+    // console.log(bookmarkliString);
     $('.js-bookmark-list').html(bookmarkliString);
   }
 
@@ -58,6 +70,13 @@ const bookmarkList = (function(){
         </fieldset>
       </form>
     `;
+  }
+
+  function handleRatingFilter() {
+    $('select :selected').change(function (e) {
+      const ratingValue = $('#js-rate-order-option').val();
+      console.log(ratingValue);
+    });
   }
 
   function handleAddBookmarkClick() {
@@ -104,22 +123,35 @@ const bookmarkList = (function(){
     return $(bookmark).closest('.js-bookmark-element').data('bookmark-id');
   }
   function handleShowMoreButton() {
-    $('.js-bookmark-list').on('click', '.js-show-more', function(e) {
+    $('.js-bookmark-list').on('click', '.js-show-more-less', function(e) {
       console.log('show more clicked');
       const id = getItemIdFromElement(e.currentTarget);
-      // console.log(id);
-      const locateItem = store.findbyid(id);
-      // console.log(locateItem);
-      const addDesc = locateItem.desc;
-      console.log(addDesc);
-      $('.js-desc').html(addDesc);
+      console.log(id);
+      const bookmark = store.findbyid(id);
+      bookmark.expanded = !bookmark.expanded;
+      render();
+    });
+  }
+
+  function handleDeleteBookmark() {
+    $('.js-bookmark-list').on('click', '.js-delete-button', function (e) {
+      e.preventDefault();
+      const idtoDelete = getItemIdFromElement(e.currentTarget);
+      // const bookmarkObj = $(e.target).serializeJson();
+      api.deleteBookmark(idtoDelete, response => { 
+        store.findAndDelete(idtoDelete);
+        render();
+      });
+
     });
   }
 
   function bindEventListenrs() {
+    handleRatingFilter();
     handleAddBookmarkClick();
     handleBookmarkSubmitForm();
     handleShowMoreButton();
+    handleDeleteBookmark();
   }
 
   return {

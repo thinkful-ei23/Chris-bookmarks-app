@@ -20,11 +20,21 @@ const api = (function() {
     });
   };
 
+  const updateBookmark = function (stringify, callback) {
+    $.ajax({
+      url: BASE_URL,
+      method: 'PATCH',
+      data:stringify,
+      success: callback
+    });
+  };
+
   const deleteBookmark = function (stringify, callback) {
     
     $.ajax({
       url: BASE_URL,
       method: 'DELETE',
+      data: stringify,
       success: callback
     });
   };
