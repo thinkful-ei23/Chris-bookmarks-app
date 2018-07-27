@@ -1,1 +1,1 @@
-https://github.com/thinkful-ei23/Chris-bookmarks-app
+https://thinkful-ei23.github.io/Chris-bookmarks-app/
