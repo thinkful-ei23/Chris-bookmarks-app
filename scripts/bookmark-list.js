@@ -3,13 +3,15 @@
 const bookmarkList = (function(){
 
   function generatesliElements(bookmark) {
-
     return ` 
-      <li class="js-bookmark-element" data-item-id="bookmark.id">
-        <div class="title-container">
-          ${bookmark.title}  >> <button>Show more</button>
+      <li class="js-bookmark-element" data-bookmark-id="bookmark.id">
+        <div class="title-container js-title">
+          ${bookmark.title}  >> <button class="js-show-more">Show more</button>
         </div>
-      
+        <div class="js-desc">
+        </div>
+        <div></div>
+      </li>
     `;
   }
 
@@ -21,7 +23,7 @@ const bookmarkList = (function(){
   }
 
   function render() {
-    console.log('render, ran')
+    console.log('render, ran');
     const bookmarkliString = generateShoppingBookmarksString(store.bookmarks);
     console.log(bookmarkliString);
     $('.js-bookmark-list').html(bookmarkliString);
@@ -31,24 +33,25 @@ const bookmarkList = (function(){
     return `
       <form action="" class="js-add-form">
         <div class="title-url">
-          <input type="text" name="title" id="title" placeholder="ex: The Great Gatsby" required>
-          <input type="text" name="webURL" id="url" placeholder="ex: https//books.com">
+          <label for="book-title">Title:</label>
+          <input type="text" name="title" id="book-title" placeholder="ex: The Great Gatsby" required>
+          <label for="url">URL:</label>
+          <input type="text" name="url" id="url" placeholder="ex: https://books.com">
         </div>
-        <input type="text" name="description" id="description" placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, sunt sit provident eaque officia molestiae. Veritatis
+        <label for="book-description">Description: </label>
+        <input type="text" name="description" id="book-description" placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, sunt sit provident eaque officia molestiae. Veritatis
         laudantium quis voluptates corporis.">
 
-        <button class="js-accept-button">Accept</button>
+        <input class="js-add-bookmark" type="submit" value="add" />
         <button class="js-cancel-button">Cancel</button>
         <fieldset>
-          <input type="radio" id="rating-0" name="rating" value="0" class="star-cb-clear" />
-          <label for="rating-0">0</label>
           <input type="radio" id="rating-1" name="rating" value="1" />
           <label for="rating-1">1</label>
           <input type="radio" id="rating-2" name="rating" value="2" />
           <label for="rating-2">2</label>
           <input type="radio" id="rating-3" name="rating" value="3" />
           <label for="rating-3">3</label>
-          <input type="radio" id="rating-4" name="rating" value="4" checked="checked" />
+          <input type="radio" id="rating-4" name="rating" value="4" checked="checked"/>
           <label for="rating-4">4</label>
           <input type="radio" id="rating-5" name="rating" value="5" />
           <label for="rating-5">5</label>
@@ -61,13 +64,63 @@ const bookmarkList = (function(){
     console.log('handleadditem, ran');
     $('.js-add-bookmark').click(function (e) {
       e.preventDefault();
-      $('.js-rate-add-form').html(generateaddBookmarkForm());
+      $('.add-bookmark').html(generateaddBookmarkForm());
+      // store.adding = true;
+      render();
+    });
+  }
+
+  $.fn.extend({
+    serializeJson: function serializeJson() {
+      const formData = new FormData(this[0]);
+      console.log('in serialize' + formData);
+      const Objbookmarks = {};
+      formData.forEach((val, name) => {
+        Objbookmarks[name] = val;
+      });
+      return JSON.stringify(Objbookmarks);
+    }
+  });
+
+  function handleBookmarkSubmitForm() {
+    // might need event delegation here
+    $('.add-bookmark').on('submit', function (e) {
+      e.preventDefault();
+      console.log('in hadnesubmitform' + e.target);
+      const bookmarkInfo = $(e.target).serializeJson();
+      console.log(bookmarkInfo);
+      api.createBookmark(bookmarkInfo, response => {
+        store.addbookmark(response);
+        render();
+      });
+    });
+  }
+
+  // function handleCancelSubmit() {
+  //   $('.add-bookmark').on('click', '.js-cancel-button', function(e) {
+
+  //   });
+  // }
+
+  function getItemIdFromElement(bookmark) {
+    return $(bookmark).closest('.js-bookmark-element').data('bookmark-id');
+  }
+  function handleShowMoreButton() {
+    $('.js-bookmark-list').on('click', '.js-show-more', function(e) {
+      console.log('show more clicked');
+      const id = getItemIdFromElement(e.currentTarget);
+      const locateItem = store.findbyid(id)
+      
+      console.log(addDesc);
+      $('.js-desc').html(addDesc);
       render();
     });
   }
 
   function bindEventListenrs() {
     handleAddBookmarkClick();
+    handleBookmarkSubmitForm();
+    handleShowMoreButton();
   }
 
   return {

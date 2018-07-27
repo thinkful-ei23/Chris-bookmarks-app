@@ -4,13 +4,14 @@
 const store = (function(){
 
   const bookmarks = [];
-  const addButton = false;
-  const ratingFilter = 5;
+  const adding = false;
+  const rating = 4;
   const desc = '';
   const url = '';
 
   const addbookmark = function(bookmark) {
     this.bookmarks.push(bookmark);
+    console.log(this.bookmarks);
   };
 
   const findbyid = function(id) {
@@ -24,8 +25,8 @@ const store = (function(){
 
   return {
     bookmarks,
-    addButton,
-    ratingFilter,
+    adding,
+    rating,
     desc,
     url,
     
