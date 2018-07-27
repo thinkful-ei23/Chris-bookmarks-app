@@ -11,7 +11,6 @@ const store = (function(){
 
   const addbookmark = function(bookmark) {
     this.bookmarks.push(bookmark);
-    console.log(this.bookmarks);
   };
 
   const findbyid = function(id) {

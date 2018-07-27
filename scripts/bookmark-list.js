@@ -4,11 +4,12 @@ const bookmarkList = (function(){
 
   function generatesliElements(bookmark) {
     return ` 
-      <li class="js-bookmark-element" data-bookmark-id="bookmark.id">
+      <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
         <div class="title-container js-title">
           ${bookmark.title}  >> <button class="js-show-more">Show more</button>
         </div>
         <div class="js-desc">
+        
         </div>
         <div></div>
       </li>
@@ -18,7 +19,6 @@ const bookmarkList = (function(){
   function generateShoppingBookmarksString(bookmarkList) {
     console.log('generateshopbookmarkString, ran');
     const bookmark = bookmarkList.map(item => generatesliElements(item));
-    console.log(bookmark);
     return bookmark.join('');
   }
 
@@ -39,7 +39,7 @@ const bookmarkList = (function(){
           <input type="text" name="url" id="url" placeholder="ex: https://books.com">
         </div>
         <label for="book-description">Description: </label>
-        <input type="text" name="description" id="book-description" placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, sunt sit provident eaque officia molestiae. Veritatis
+        <input type="text" name="desc" id="book-description" placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, sunt sit provident eaque officia molestiae. Veritatis
         laudantium quis voluptates corporis.">
 
         <input class="js-add-bookmark" type="submit" value="add" />
@@ -73,7 +73,6 @@ const bookmarkList = (function(){
   $.fn.extend({
     serializeJson: function serializeJson() {
       const formData = new FormData(this[0]);
-      console.log('in serialize' + formData);
       const Objbookmarks = {};
       formData.forEach((val, name) => {
         Objbookmarks[name] = val;
@@ -88,7 +87,6 @@ const bookmarkList = (function(){
       e.preventDefault();
       console.log('in hadnesubmitform' + e.target);
       const bookmarkInfo = $(e.target).serializeJson();
-      console.log(bookmarkInfo);
       api.createBookmark(bookmarkInfo, response => {
         store.addbookmark(response);
         render();
@@ -109,11 +107,12 @@ const bookmarkList = (function(){
     $('.js-bookmark-list').on('click', '.js-show-more', function(e) {
       console.log('show more clicked');
       const id = getItemIdFromElement(e.currentTarget);
-      const locateItem = store.findbyid(id)
-      
+      // console.log(id);
+      const locateItem = store.findbyid(id);
+      // console.log(locateItem);
+      const addDesc = locateItem.desc;
       console.log(addDesc);
       $('.js-desc').html(addDesc);
-      render();
     });
   }
 
