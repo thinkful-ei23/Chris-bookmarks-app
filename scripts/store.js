@@ -14,12 +14,17 @@ const store = (function(){
   };
 
   const findbyid = function(id) {
-    return this.bookmarks.find(bookmarkobj => bookmarkobj.id === id);
+    return this.bookmarks.find(bookmark => bookmark.id === id);
   };
 
   const findAndDelete = function(id) {
     this.bookmarks = this.bookmarks.filter(bookmark => bookmark.id !== id);
+    console.log(this.bookmarks);
   };
+
+  // const filterRating = function () {
+  //   this.bookmarks.rating = !this.rating;
+  // }
 
 
   return {

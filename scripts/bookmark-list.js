@@ -48,7 +48,7 @@ const bookmarkList = (function(){
           <label for="book-title">Title:</label>
           <input type="text" name="title" id="book-title" placeholder="ex: The Great Gatsby" required>
           <label for="url">URL:</label>
-          <input type="text" name="url" id="url" placeholder="ex: https://books.com">
+          <input type="text" name="url" id="url" placeholder="ex: https://books.com" required>
         </div>
         <label for="book-description">Description: </label>
         <input type="text" name="desc" id="book-description" placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur, sunt sit provident eaque officia molestiae. Veritatis
@@ -74,6 +74,7 @@ const bookmarkList = (function(){
 
   function handleRatingFilter() {
     $('select :selected').change(function (e) {
+      e.preventDefault();
       const ratingValue = $('#js-rate-order-option').val();
       console.log(ratingValue);
     });
@@ -133,12 +134,13 @@ const bookmarkList = (function(){
     });
   }
 
-  function handleDeleteBookmark() {
+  function handleDeleteBookmarkClick() {
     $('.js-bookmark-list').on('click', '.js-delete-button', function (e) {
       e.preventDefault();
       const idtoDelete = getItemIdFromElement(e.currentTarget);
+      console.log(idtoDelete);
       // const bookmarkObj = $(e.target).serializeJson();
-      api.deleteBookmark(idtoDelete, response => { 
+      api.deleteBookmark(idtoDelete, () => { 
         store.findAndDelete(idtoDelete);
         render();
       });
@@ -151,7 +153,7 @@ const bookmarkList = (function(){
     handleAddBookmarkClick();
     handleBookmarkSubmitForm();
     handleShowMoreButton();
-    handleDeleteBookmark();
+    handleDeleteBookmarkClick();
   }
 
   return {

@@ -19,28 +19,29 @@ const api = (function() {
       success: callback
     });
   };
-
+  // for extension to edit inputs and pass to api for change
   const updateBookmark = function (stringify, callback) {
     $.ajax({
       url: BASE_URL,
       method: 'PATCH',
-      data:stringify,
+      contentType: 'applocation/json',
+      data: stringify,
       success: callback
     });
   };
 
-  const deleteBookmark = function (stringify, callback) {
+  const deleteBookmark = function (id, callback) {
     
     $.ajax({
-      url: BASE_URL,
+      url: BASE_URL + '/' +id,
       method: 'DELETE',
-      data: stringify,
       success: callback
     });
   };
   return {
     getBookmarkInfo,
     createBookmark,
+    updateBookmark,
     deleteBookmark
   };
 
