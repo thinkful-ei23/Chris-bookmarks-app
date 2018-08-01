@@ -1,5 +1,5 @@
 'use strict';
-/* global $ */
+/* global $, store, api */
 
 const bookmarkList = (function(){
 
@@ -25,14 +25,9 @@ const bookmarkList = (function(){
       `;
     return ` 
       <li class="js-bookmark-element" data-bookmark-id="${bookmark.id}">
-        <div class="title-container js-title">
-          ${bookmark.title}  >> <button class="js-show-more-less">${buttonLabel}</button>
-        </div>
+        <div class="title-container js-title"> ${bookmark.title}  >> <button class="js-show-more-less">${buttonLabel}</button></div>
         ${description}
-        <div class="visit-delete">
-          ${visitLink}
-          ${deleteButton}
-        </div>
+        <div class="visit-delete">${visitLink} ${deleteButton}</div>
         <div class="stars js-stars rating-${bookmark.rating}">${starRating}</div>
       </li>
     `;
@@ -72,6 +67,7 @@ const bookmarkList = (function(){
         <button type="button" class="js-cancel-button">Cancel</button>
 
         <fieldset>
+          <legend>How would you rate it?</legend>
           <input type="radio" id="rating-1" name="rating" value="1" />
           <label for="rating-1">1</label>
           <input type="radio" id="rating-2" name="rating" value="2" />
@@ -114,7 +110,6 @@ const bookmarkList = (function(){
         render();
         return;
       }
-      console.log('in hadnesubmitform' + e.target);
       const bookmarkInfo = $(e.target).serializeJson();
       api.createBookmark(bookmarkInfo, response => {
         store.addbookmark(response);
@@ -136,8 +131,10 @@ const bookmarkList = (function(){
     });
   }
 
-  function getItemIdFromElement(bookmark) {
-    return $(bookmark).closest('.js-bookmark-element').data('bookmark-id');
+  function getItemIdFromElement(element) {
+    console.log('inside get item id from element');
+    console.log(element);
+    return $(element).closest('.js-bookmark-element').data('bookmark-id');
   }
   function handleShowMoreButton() {
     $('.js-bookmark-list').on('click', '.js-show-more-less', function(e) {
@@ -163,12 +160,23 @@ const bookmarkList = (function(){
     });
   }
 
+  // function handleErrors() {
+  //   $('.add-bookmark').on('submit', '#url', function (e) {
+  //     console.log('hi')
+  //     e.preventDefault();
+  //     if ($('#url').val() === '') {
+  //       alert('Please enter a title');
+  //     }
+  //   });
+  // }
+
   function bindEventListenrs() {
     handleRatingFilter();
     handleBookmarkAddSubmitForm();
     handleBookmarkCancelClick();
     handleShowMoreButton();
     handleDeleteBookmarkClick();
+    // handleErrors();
   }
 
   return {

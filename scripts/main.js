@@ -8,5 +8,4 @@ $(document).ready(function () {
     bookmarks.forEach(element => store.addbookmark(element));
     bookmarkList.render();
   });
-  console.log('Hi');
 });

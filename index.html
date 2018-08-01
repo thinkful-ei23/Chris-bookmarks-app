@@ -10,15 +10,17 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
     crossorigin="anonymous">
 </head>
-<body>
+<body class="row">
   <header role="banner">
-    <h1>My Bookmarks</h1>
+    <div class="col-12">
+      <h1>My Bookmarks</h1>
+    </div>
   </header>
-  <main role="main">
+  <main role="main" class="row">
     <!-- Rating Form dropdown menu -->
-    <form role="search" class="js-rate-form">
+    <form role="search" class="form-rate js-rate-form">
         <label for="rating">Only ratings above: </label>
-        <select name="rating" id="js-rate-order-option" aria-label="sort">
+        <select name="rating" id="js-rate-order-option">
           <option disable selected value>Select Rating</option>
           <option value="5">5 Star Rating</option>
           <option value="4">4 Star Rating</option>
@@ -27,8 +29,8 @@
           <option value="1">1 Star Rating</option>
         </select>
       </form>
-    <form role="search" class="add-bookmark">
-      <button class="js-add-bookmark">Add Bookmark</button>
+    <form role="search" class="form-add add-bookmark">
+      <button class="add-button js-add-bookmark">Add Bookmark</button>
     </form>
 
     <ul class="container js-bookmark-list">
