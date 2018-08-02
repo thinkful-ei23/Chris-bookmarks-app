@@ -11,7 +11,7 @@ const bookmarkList = (function(){
     if (bookmark.expanded === true) {
       description = `<div class="desc-container js-desc">
                       <label for="desc">Description: </label>
-                      ${bookmark.desc}
+                      <p>${bookmark.desc}<p>
                     </div>`;
       buttonLabel = 'Show less';
       visitLink = `<a href="${bookmark.url}" target="_blank"><button>Visit Site</button></a>`;
