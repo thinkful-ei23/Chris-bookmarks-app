@@ -9,14 +9,15 @@ const api = (function() {
     $.getJSON(BASE_URL, callback);
   };
 
-  const createBookmark = function (stringify, callback) {
+  const createBookmark = function (stringify, callback, error) {
     console.log(stringify);
     $.ajax({
       url: BASE_URL,
       method: 'POST',
       contentType: 'application/json',
       data: stringify,
-      success: callback
+      success: callback,
+      error: error
     });
   };
   // for extension to edit inputs and pass to api for change and filter?

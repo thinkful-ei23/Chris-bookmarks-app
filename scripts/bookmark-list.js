@@ -110,6 +110,7 @@ const bookmarkList = (function(){
       const bookmarkInfo = $(e.target).serializeJson();
       api.createBookmark(bookmarkInfo, response => {
         store.addbookmark(response);
+
         store.adding = false;
         render();
       });

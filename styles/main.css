@@ -6,6 +6,7 @@ body {
   font-family: 'Roboto', sans-serif;
   text-align: center;
   border: 1px solid black;
+  min-height: 900px;
 }
 
 form {
@@ -35,7 +36,7 @@ li {
   border: 1px solid black;
   text-align: left;
   border-radius: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 40px;
 }
 
 .stars {
@@ -85,7 +86,7 @@ fieldset {
   max-width: 1000px;
   padding-left: 20px;
   padding-right: 20px;
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 /* Clearfix */
