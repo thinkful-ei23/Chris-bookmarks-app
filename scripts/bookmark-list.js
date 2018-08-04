@@ -11,8 +11,8 @@ const bookmarkList = (function(){
     if (bookmark.expanded === true) {
       description = `<div class="desc-container js-desc"><label for="desc">Description: </label> <p>${bookmark.desc}</p> </div>`;
       buttonLabel = 'Show less';
-      visitLink = `<a href="${bookmark.url}" target="_blank"><button>Visit Site</button></a>`;
-      deleteButton = '<button class="js-delete-button">Delete Bookmark</button>';
+      visitLink = `<a href="${bookmark.url}" target="_blank"><button aria-label="visit link">Visit Site</button></a>`;
+      deleteButton = '<button class="js-delete-button" aria-label="Delete bookmark">Delete Bookmark</button>';
     }
     let starRating = `<span class="fa fa-star star1"></span>
       <span class="fa fa-star star2"></span>
@@ -135,15 +135,15 @@ const bookmarkList = (function(){
   }
 
   function getItemIdFromElement(element) {
-    console.log('inside get item id from element');
-    console.log(element);
+    // console.log('inside get item id from element');
+    // console.log(element);
     return $(element).closest('.js-bookmark-element').data('bookmark-id');
   }
   function handleShowMoreButton() {
     $('.js-bookmark-list').on('click', '.js-show-more-less', function(e) {
-      console.log('show more clicked');
+      // console.log('show more clicked');
       const id = getItemIdFromElement(e.currentTarget);
-      console.log(id);
+      // console.log(id);
       const bookmark = store.findbyid(id);
       bookmark.expanded = !bookmark.expanded;
       render();
