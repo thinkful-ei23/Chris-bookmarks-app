@@ -6,7 +6,7 @@ const store = (function(){
   const bookmarks = [];
   const adding = false;
   const rating = 1;
-  const url = '';
+  const error = '';
 
   const addbookmark = function(bookmark) {
     this.bookmarks.push(Object.assign(bookmark, {expanded: false}));
@@ -30,7 +30,7 @@ const store = (function(){
     bookmarks,
     adding,
     rating,
-    url,
+    error,
     
     addbookmark,
     findbyid,

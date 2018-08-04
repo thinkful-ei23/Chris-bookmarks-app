@@ -1,4 +1,5 @@
 'use strict';
+/* global $, api, bookmarkList */
 
 $(document).ready(function () {
 

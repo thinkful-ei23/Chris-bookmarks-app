@@ -99,7 +99,7 @@ const bookmarkList = (function(){
   });
 
   function handleBookmarkAddSubmitForm() {
-    console.log('event handle bookmark');
+    // console.log('event handle bookmark');
     $('.add-bookmark').on('submit', function (e) {
       e.preventDefault();
       if (store.adding === false) {
@@ -109,16 +109,21 @@ const bookmarkList = (function(){
       }
       const bookmarkInfo = $(e.target).serializeJson();
       api.createBookmark(bookmarkInfo, response => {
-        store.addbookmark(response);
-
         store.adding = false;
+        store.addbookmark(response);
         render();
-      });
+      },
+      (error) => {
+        store.error = error.responseJSON.message;
+        // console.log(store.error);
+        alert(store.error);
+      } 
+      );
     });
   }
 
   function handleBookmarkCancelClick() {
-    console.log('event handle bookmark')
+    // console.log('event handle bookmark');
     // might need event delegation here
     $('.add-bookmark').on('click', '.js-cancel-button', function (e) {
       if (store.adding === true) {
