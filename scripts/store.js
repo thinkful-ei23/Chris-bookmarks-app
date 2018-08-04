@@ -6,7 +6,6 @@ const store = (function(){
   const bookmarks = [];
   const adding = false;
   const rating = 1;
-  // const desc = '';
   const url = '';
 
   const addbookmark = function(bookmark) {
@@ -31,7 +30,6 @@ const store = (function(){
     bookmarks,
     adding,
     rating,
-    // desc,
     url,
     
     addbookmark,

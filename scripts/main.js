@@ -2,7 +2,7 @@
 
 $(document).ready(function () {
 
-// add getbook mark API
+// call getbookmarkInfo API to reneder list when DOM loads
   bookmarkList.bindEventListenrs();
   api.getBookmarkInfo(bookmarks => {
     bookmarks.forEach(element => store.addbookmark(element));

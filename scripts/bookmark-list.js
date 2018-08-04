@@ -157,16 +157,6 @@ const bookmarkList = (function(){
     });
   }
 
-  // function handleErrors() {
-  //   $('.add-bookmark').on('submit', '#url', function (e) {
-  //     console.log('hi')
-  //     e.preventDefault();
-  //     if ($('#url').val() === '') {
-  //       alert('Please enter a title');
-  //     }
-  //   });
-  // }
-
   function bindEventListenrs() {
     handleRatingFilter();
     handleBookmarkAddSubmitForm();
